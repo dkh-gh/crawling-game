@@ -4,16 +4,12 @@ lapka[] lapa = new lapka[4];
 zacepka[] zacepa = new zacepka[10]; 
 
 float x, y;
+int score = 0, record = 0;
+boolean OK = false;
 
 void setup() {
   size(800, 600);
-  for(int i = 0; i < 10; i++) {
-    zacepa[i] = new zacepka(random(0,800), random(0,600));
-  }
-  for(int i = 0; i < 4; i++) {
-    lapa[i] = new lapka(random(0,800), random(0,600));
-  }
-  x = width/2; y = height/2;
+  restart();
 }
 
 
@@ -30,7 +26,12 @@ void draw() {
   nY /= lapa.length;
   
   x += (nX-x)/10;
-  y += (nY-y)/10 + 20;
+  y += (nY-y)/10 + 15;
+  
+  if(y > height-20) {
+    for(int i = 0; i < lapa.length; i++) lapa[i].zacep = false;
+    if(y > height*2) restart();
+  }
   
   for(int i = 0; i < 10; i++) zacepa[i].update();
   
@@ -51,4 +52,24 @@ void draw() {
     lapa[i].update();
   }
   
+  textSize(20);
+  text("СЧЁТ: "+score, 20, 40);
+  text("РЕКОРД: "+record, 650, 40);
+  
+}
+
+void restart() {
+  
+  OK = false;
+  
+  if(score > record) record = score;
+  score = 0;
+  
+  for(int i = 0; i < 4; i++) {
+    lapa[i] = new lapka(random(0,800), random(0,600));
+  }
+  for(int i = 0; i < 10; i++) {
+    zacepa[i] = new zacepka(random(0,800), random(0,600));
+  }
+  x = width/2; y = height/2;
 }
